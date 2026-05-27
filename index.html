@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>✦ Ngôi Sao Tình Yêu Của Em ✦</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 
@@ -19,12 +19,14 @@
   --cream:     #F2E8D8;
   --mist:      #A89CC0;
   --void:      #04050F;
-  --deep:      #1C0709;
-  --mid:       #300C10;
+  --deep:      #1C0709; 
+  --mid:       #300C10; 
 }
 
 html, body {
-  width:100%; height:100%;
+  width:100%; 
+  height: 100%;
+  height: -webkit-fill-available; /* Sửa lỗi chiều cao trên Safari/Chrome Mobile */
   background: var(--void);
   color: var(--cream);
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -158,15 +160,16 @@ html, body {
 
 .info-bar {
   position:absolute; bottom:0; left:0; right:0; z-index:5;
-  padding: 50px 60px 44px;
-  background: linear-gradient(to top, rgba(4,5,15,.97) 0%, rgba(4,5,15,.75) 45%, transparent 100%);
-  display:flex; align-items:flex-end; justify-content:space-between; gap:40px;
+  padding: 40px 60px 44px;
+  background: linear-gradient(to top, rgba(4,5,15,.98) 0%, rgba(4,5,15,.8) 55%, transparent 100%);
+  display:flex; align-items:flex-end; justify-content:space-between; gap:32px;
   flex-wrap:wrap;
+  max-height: 50vh; /* Giới hạn chiều cao khối chữ trên mobile tránh đè model */
+  overflow-y: auto;  /* Tự cuộn nếu chữ quá dài */
 }
 
 .star-left { flex:1; min-width:240px; }
 
-/* Thêm hiệu ứng chữ nhỏ tinh tế cho Tên Sao */
 .star-astronomy-name {
   font-family: 'Cinzel Decorative', serif;
   font-size: 13px;
@@ -177,13 +180,12 @@ html, body {
   text-transform: uppercase;
 }
 
-/* Biến tên của ẻm thành Spotlight lớn, nổi bật */
 .girl-name-big {
   font-family:'Cinzel Decorative',serif;
-  font-size: clamp(32px, 5.5vw, 64px); /* Tăng kích thước chữ to hơn hẳn */
-  color: #FFFFFF; /* Màu trắng sáng thuần khiết tạo tương phản mạnh */
+  font-size: clamp(32px, 5.5vw, 64px); 
+  color: #FFFFFF; 
   line-height:1.15; margin-bottom:8px;
-  text-shadow: 0 0 20px rgba(255,200,220,0.8), 0 0 40px rgba(255,150,180,0.4); /* Glow sáng rực hồng */
+  text-shadow: 0 0 20px rgba(255,200,220,0.8), 0 0 40px rgba(255,150,180,0.4); 
   letter-spacing: 0.05em;
 }
 
@@ -228,22 +230,26 @@ html, body {
 .girl-name-big { word-break:break-word; }
 .star-msg      { word-break:break-word; }
 
+/* ──────────────────────────────────────────
+   RESPONSIVE MOBILE CHUẨN KHÔNG BỊ LỆCH KHUNG
+────────────────────────────────────────── */
 @media (max-width:900px){
-  .info-bar { padding:44px 36px 36px; gap:28px; }
+  .info-bar { padding:36px 32px; gap:24px; }
   .girl-name-big { font-size: clamp(26px, 6vw, 44px) !important; }
 }
 @media (max-width:680px){
-  .info-bar      { flex-direction:column; align-items:flex-start; padding:30px 20px 32px; gap:20px; }
+  .info-bar      { flex-direction:column; align-items:flex-start; padding:20px 20px 28px; gap:12px; max-height: 45vh; }
   .star-right    { text-align:left; width:100%; }
-  .divider       { margin:12px 0; }
-  .coord-row     { justify-content:flex-start; gap:12px; }
-  .pw-card       { padding:40px 24px 36px; }
-  .girl-name-big { font-size: clamp(24px, 8vw, 38px) !important; }
-  .star-msg      { font-size:14px; }
+  .divider       { margin:8px 0; }
+  .coord-row     { justify-content:flex-start; gap:12px; font-size: 13px; }
+  .pw-card       { padding:36px 20px 32px; }
+  .girl-name-big { font-size: clamp(24px, 8vw, 36px) !important; margin-bottom: 4px; }
+  .star-msg      { font-size:13.5px; line-height:1.65; }
+  .star-meaning  { font-size:15px; margin-bottom:12px; }
 }
 @media (max-width:400px){
   .girl-name-big { font-size: clamp(20px, 9vw, 30px) !important; }
-  .info-bar      { padding:24px 16px 28px; }
+  .info-bar      { padding:16px 16px 24px; }
 }
 </style>
 </head>
@@ -251,27 +257,27 @@ html, body {
 
 <script>
 const CFG = {
-  /* 🔑 Mật khẩu */
-  password:      "1308",
+  /* 🔑 Mật khẩu truy cập */
+  password:      "loveday",
 
-  /* ⭐ Tên Ngôi Sao Thiên Văn (Chữ nhỏ thanh lịch phía trên) */
+  /* ⭐ Tên Ngôi Sao Thiên Văn (Dòng chữ nhỏ thanh lịch nằm ở trên) */
   starName:      "AETERNUS VENUS (TAURUS)", 
 
-  /* 💖 Tên của Ẻm (Sẽ hiện TO NHẤT, NỔI BẬT NHẤT màn hình) */
-  girlName:      "PHẠM NGỌC HẢI THI", 
+  /* 💖 Tên của Ẻm (Sẽ hiện SIÊU TO, TOẢ SÁNG LUNG LINH giữa màn hình) */
+  girlName:      "NGUYỄN MINH ANH", 
 
-  /* 📜 Ý nghĩa & Lời chúc */
+  /* 📜 Ý nghĩa & Lời chúc gửi đến ẻm */
   starMeaning:   "Ngôi Sao Đẹp Nhất Vũ Trụ Của Anh",
   message:       "Ngôi sao này chính là hiện thân của tình yêu thuần khiết và bất tử mà anh dành cho em. Dù vũ trụ có thay đổi, ánh sáng của nó vẫn sẽ luôn dõi theo và sưởi ấm trái tim em, mãi mãi.",
 
-  /* 📡 Tọa độ thiên văn */
+  /* 📡 Tọa độ thiên văn ngôi sao */
   ra:            "03h 15m 12.0s",
   dec:           "+18° 30′ 01″",
   magnitude:     "-4.2",
   distance:      "40 - 260 triệu km",
   constellation: "Taurus",
 
-  /* 🌈 Màu sắc ngôi sao */
+  /* 🌈 Màu sắc ngôi sao: Chọn hệ màu 'rose' cho chủ đề tình yêu lãng mạn */
   starColor:     "rose",
 };
 </script>
@@ -296,7 +302,6 @@ const CFG = {
     <div class="star-left">
       <div class="star-astronomy-name" id="d-star-name">…</div>
       <div class="girl-name-big" id="d-girl-name">…</div>
-      
       <div class="star-meaning"  id="d-meaning">…</div>
       <div class="star-msg"      id="d-msg">…</div>
     </div>
@@ -317,7 +322,7 @@ const CFG = {
 
 <script>
 /* ──────────────────────────────────────────
-   STAR FIELD (CSS background on pw screen)
+   STAR FIELD BACKGROUND
 ────────────────────────────────────────── */
 (function(){
   const bg = document.getElementById('pw-bg');
@@ -384,7 +389,7 @@ function revealStar(){
 }
 
 /* ──────────────────────────────────────────
-   THREE.JS — STAR
+   THREE.JS — 3D MODEL
 ────────────────────────────────────────── */
 function initThree(){
   const COLORS = {
@@ -405,7 +410,7 @@ function initThree(){
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, .1, 500);
   camera.position.set(0,0,5);
 
-  /* ── background star field ── */
+  /* background star field */
   const BG_COUNT = 6000;
   const bPos  = new Float32Array(BG_COUNT*3);
   const bCol  = new Float32Array(BG_COUNT*3);
@@ -449,7 +454,7 @@ function initThree(){
   });
   scene.add(new THREE.Points(bgGeo, bgMat));
 
-  /* ── nebula background glow ── */
+  /* nebula background glow */
   const mkTex = (fn, sz=256)=>{
     const c=document.createElement('canvas'); c.width=c.height=sz;
     fn(c.getContext('2d'), c.width);
@@ -472,14 +477,14 @@ function initThree(){
   nebSprite.position.z = -1;
   scene.add(nebSprite);
 
-  /* ── star core ── */
+  /* star core */
   const core = new THREE.Mesh(
     new THREE.SphereGeometry(.2,32,32),
     new THREE.MeshBasicMaterial({ color: new THREE.Color(C.core) })
   );
   scene.add(core);
 
-  /* ── glow sprite factory ── */
+  /* glow sprite factory */
   function glowSprite(inner, outer, sz=256){
     const tex = mkTex((ctx,s)=>{
       const g=ctx.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
@@ -500,7 +505,7 @@ function initThree(){
   const g3 = glowSprite(C.outer, 'rgba(0,0,0,0)', 512);              g3.scale.set(7,7,1);
   scene.add(g1,g2,g3);
 
-  /* ── 8-pointed star rays ── */
+  /* 8-pointed star rays */
   function rayTex(angle, alpha){
     return mkTex((ctx,s)=>{
       ctx.save(); ctx.translate(s/2,s/2); ctx.rotate(angle); ctx.translate(-s/2,-s/2);
@@ -528,7 +533,7 @@ function initThree(){
   ray2.scale.set(3.8,3.8,1);
   scene.add(ray1,ray2);
 
-  /* ── floating sparkles around star ── */
+  /* floating sparkles around star */
   const SPARK = 60;
   const spkPos  = new Float32Array(SPARK*3);
   const spkData = [];
@@ -547,7 +552,7 @@ function initThree(){
   const sparkles = new THREE.Points(spkGeo, spkMat);
   scene.add(sparkles);
 
-  /* ── ambient particles in full scene ── */
+  /* ambient particles in full scene */
   const DUST = 300;
   const dustPos = new Float32Array(DUST*3);
   for(let i=0;i<DUST;i++){
@@ -563,17 +568,25 @@ function initThree(){
   });
   scene.add(new THREE.Points(dustGeo, dustMat));
 
-  /* ── mouse parallax ── */
+  /* mouse parallax */
   const mouse = {tx:0, ty:0, cx:0, cy:0};
   document.addEventListener('mousemove', e=>{
     mouse.tx = (e.clientX/window.innerWidth-.5)*.6;
     mouse.ty = (e.clientY/window.innerHeight-.5)*.4;
   });
 
-  /* ── intro state ── */
+  /* thiết lập tracking cảm ứng di chuyển trên điện thoại */
+  document.addEventListener('touchmove', e=>{
+    if(e.touches.length > 0) {
+      mouse.tx = (e.touches[0].clientX/window.innerWidth-.5)*.6;
+      mouse.ty = (e.touches[0].clientY/window.innerHeight-.5)*.4;
+    }
+  }, { passive: true });
+
+  /* intro state */
   let t=0, intro=0;
 
-  /* ── animate ── */
+  /* animate loop */
   function animate(){
     requestAnimationFrame(animate);
     t += .012;
