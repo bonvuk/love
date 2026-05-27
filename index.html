@@ -159,14 +159,9 @@ html, body {
   background: linear-gradient(to top, rgba(2,3,8,1) 0%, rgba(2,3,8,.85) 60%, transparent 100%);
   display:flex; align-items:flex-end; justify-content:space-between; gap:32px;
   flex-wrap:wrap;
-  max-height: 55vh;
-  overflow-y: auto !important;
-  -ms-overflow-style: none !important; /* Đã fix cú pháp lỗi dấu cách */
-  scrollbar-width: none !important;
+  max-height: 50vh;
+  overflow-y: auto;
 }
-
-/* Khóa chết thanh cuộn Chrome và Safari Mobile */
-.info-bar::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
 
 .star-left, .star-right { 
   flex:1; min-width:240px; 
@@ -233,30 +228,22 @@ html, body {
 .girl-name-big { word-break:break-word; }
 .star-msg      { word-break:break-word; }
 
-/* ──────────────────────────────────────────
-   RESPONSIVE (ĐÃ FIX KHÔNG CÒN BỊ CHÈN CHỮ LỖI)
-────────────────────────────────────────── */
 @media (max-width:900px){
   .info-bar { padding:36px 32px; gap:24px; }
-  .girl-name-big { font-size: clamp(28px, 6vw, 44px) !important; }
+  .girl-name-big { font-size: clamp(26px, 6vw, 44px) !important; }
 }
-
 @media (max-width:680px){
-  /* Nới rộng chiều cao tối đa lên 65vh để chữ thở thoải mái, không kích scroll */
-  .info-bar      { flex-direction:column; align-items:flex-start; padding:20px 24px 28px; gap:12px; max-height: 65vh; }
-  .star-right    { text-align:left; width:100%; margin-top: 8px; }
-  .divider       { margin:8px 0; margin-right: auto; }
-  .coord-row     { justify-content:flex-start; gap:16px; font-size: 13.5px; margin-bottom: 4px; }
-  .pw-card       { padding:36px 24px 32px; }
-  
-  .girl-name-big { font-size: clamp(24px, 7vw, 34px) !important; margin-bottom: 4px; letter-spacing: 0.02em; }
-  .star-meaning  { font-size:15px; margin-bottom:8px; }
-  .star-msg      { font-size:14px; line-height:1.7; color:rgba(242,232,216,.9); }
-  .star-astronomy-name { font-size: 11px; margin-bottom: 2px; }
-  .coord-head    { margin-bottom: 8px; }
+  .info-bar      { flex-direction:column; align-items:flex-start; padding:20px 20px 28px; gap:12px; max-height: 45vh; }
+  .star-right    { text-align:left; width:100%; }
+  .divider       { margin:8px 0; }
+  .coord-row     { justify-content:flex-start; gap:12px; font-size: 13px; }
+  .pw-card       { padding:36px 20px 32px; }
+  .girl-name-big { font-size: clamp(24px, 8vw, 36px) !important; margin-bottom: 4px; }
+  .star-msg      { font-size:13.5px; line-height:1.65; }
+  .star-meaning  { font-size:15px; margin-bottom:12px; }
 }
-@media (max-width:400px) {
-  .girl-name-big { font-size: clamp(21px, 8vw, 26px) !important; }
+@media (max-width:400px){
+  .girl-name-big { font-size: clamp(20px, 9vw, 30px) !important; }
   .info-bar      { padding:16px 16px 24px; }
 }
 </style>
@@ -432,6 +419,8 @@ function initThree(){
     return new THREE.CanvasTexture(c);
   })();
 
+  /* 🌌 ĐIỀU CHỈNH CHUYÊN SÂU: Co cụm bán kính phân bổ sao (Từ 138 xuống 98) 
+     Giúp dải sao tập trung dày đặc, tạo độ đậm nén mạnh mẽ ở trung tâm */
   const STAR_COUNT = 18000;
   const starGeo = new THREE.BufferGeometry();
   const starPos = new Float32Array(STAR_COUNT * 3);
@@ -620,6 +609,7 @@ function initThree(){
     ray1.material.opacity  = (0.75 + 0.10 * Math.sin(t * 1.8)) * eased;
     ray2.material.opacity  = (0.40 + 0.08 * Math.sin(t * 2.2)) * eased;
 
+    // Cập nhật bụi sáng bồng bềnh
     const posArr = spkGeo.attributes.position.array;
     for(let i=0; i<SPARKLES; i++) {
       posArr[i*3]   += spkVels[i].x;
@@ -638,6 +628,7 @@ function initThree(){
     }
     spkGeo.attributes.position.needsUpdate = true;
 
+    /* 🌌 THUẬT TOÁN NHẤP NHÁY KHẼ KHÀNG KHÓA BIÊN ĐỘ */
     const colorArr = starGeo.attributes.color.array;
     for(let i=0; i<STAR_COUNT; i++) {
       const factor = 0.75 + 0.25 * Math.sin(t * starTwinkleSpeeds[i] + starTwinkleOffsets[i]);
@@ -648,9 +639,11 @@ function initThree(){
     }
     starGeo.attributes.color.needsUpdate = true;
 
+    // ĐIỀU CHỈNH: Làm chậm tốc độ quay dải sao nền xuống (0.002 -> 0.0008) để tạo sự hùng vĩ
     galaxyField.rotation.y = t * 0.0008;
     galaxyField.rotation.x = t * 0.0002;
     
+    // Tinh vân co giãn lãng mạn mượt mà
     nebulaPink.scale.setScalar(25 + 0.3 * Math.sin(t * 0.2));
     nebulaBlue.scale.setScalar(36 + 0.4 * Math.cos(t * 0.15));
 
