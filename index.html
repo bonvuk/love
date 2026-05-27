@@ -153,19 +153,18 @@ html, body {
   opacity:0; animation: rise 1s ease forwards; animation-delay:2s;
 }
 
+/* Ép thẳng không cho hiện thanh cuộn dù ở bất kỳ trình duyệt nào */
 .info-bar {
   position:absolute; bottom:0; left:0; right:0; z-index:5;
-  padding: 40px 60px 44px;
-  background: linear-gradient(to top, rgba(2,3,8,1) 0%, rgba(2,3,8,.85) 60%, transparent 100%);
+  background: linear-gradient(to top, rgba(2,3,8,1) 0%, rgba(2,3,8,.9) 70%, transparent 100%);
   display:flex; align-items:flex-end; justify-content:space-between; gap:32px;
   flex-wrap:wrap;
-  max-height: 50vh;
-  overflow-y: auto;
+  max-height: 52vh;
+  overflow-y: scroll !important;
+  -overflow-style: none !important;
+  scrollbar-width: none !important;
 }
-
-/* Ẩn thanh cuộn scrollbar trên mọi trình duyệt để giữ thẩm mỹ */
-.info-bar::-webkit-scrollbar { display: none; }
-.info-bar { -ms-overflow-style: none; scrollbar-width: none; }
+.info-bar::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
 
 .star-left, .star-right { 
   flex:1; min-width:240px; 
@@ -233,30 +232,25 @@ html, body {
 .star-msg      { word-break:break-word; }
 
 /* ──────────────────────────────────────────
-   RESPONSIVE OPTIMIZATION (MOBILE CHUẨN ĐÉP)
+   LỚP PHỦ KIỂM SOÁT ĐỘ CO GIÃN TRÊN MOBILE
 ────────────────────────────────────────── */
 @media (max-width:900px){
-  .info-bar { padding:36px 32px; gap:24px; }
-  .girl-name-big { font-size: clamp(28px, 6vw, 44px) !important; }
+  .info-bar { padding: 32px 28px !important; gap: 20px !important; }
 }
+
 @media (max-width:680px){
-  /* Tối ưu khoảng cách info-bar trên mobile gọn gàng hơn */
-  .info-bar      { flex-direction:column; align-items:flex-start; padding:16px 20px 24px; gap:10px; max-height: 48vh; }
-  .star-right    { text-align:left; width:100%; }
-  .divider       { margin:6px 0; }
-  .coord-row     { justify-content:flex-start; gap:12px; font-size: 13px; margin-bottom: 4px; }
-  .pw-card       { padding:36px 20px 32px; }
+  /* Ép kiểu khối dọc và triệt tiêu padding dư thừa */
+  .info-bar      { flex-direction:column !important; align-items:flex-start !important; padding:12px 20px 20px !important; gap:6px !important; max-height:46vh !important; }
+  .star-right    { text-align:left !important; width:100% !important; margin-top: 4px !important; }
+  .divider       { margin:6px 0 !important; margin-right:auto !important; }
+  .coord-row     { justify-content:flex-start !important; gap:12px !important; font-size: 13px !important; margin-bottom: 2px !important; }
   
-  /* Đẩy kích thước tên Hải Thi lên nổi bật, chữ thông điệp nhỏ mịn lãng mạn */
-  .girl-name-big { font-size: clamp(26px, 7.5vw, 36px) !important; margin-bottom: 4px; letter-spacing: 0.02em; }
-  .star-meaning  { font-size:14.5px; margin-bottom:8px; }
-  .star-msg      { font-size:13.5px; line-height:1.65; color:rgba(242,232,216,.9); }
-  .star-astronomy-name { font-size: 11px; margin-bottom: 2px; }
-  .coord-head    { margin-bottom: 8px; }
-}
-@media (max-width:400px) {
-  .girl-name-big { font-size: clamp(22px, 8.5vw, 28px) !important; }
-  .info-bar      { padding:12px 16px 20px; }
+  /* Cấu hình lại font chữ mịn màng tinh khiết */
+  .girl-name-big { font-size: clamp(25px, 7.5vw, 34px) !important; margin-bottom: 2px !important; }
+  .star-meaning  { font-size:14px !important; margin-bottom:6px !important; }
+  .star-msg      { font-size:13px !important; line-height:1.6 !important; color:rgba(242,232,216,.85) !important; }
+  .star-astronomy-name { font-size: 10.5px !important; margin-bottom: 1px !important; }
+  .coord-head    { margin-bottom: 4px !important; font-size: 10px !important; }
 }
 </style>
 </head>
@@ -293,11 +287,13 @@ const CFG = {
 <div id="star-screen">
   <canvas id="canvas"></canvas>
   <div class="top-tag" id="top-tag">— Nằm trong Chòm Sao <span id="tag-const"></span> —</div>
-  <div class="info-bar">
-    <div class="star-left">
+  
+  <!-- Thêm thuộc tính style trực tiếp để khóa khoảng cách, chặn đứng bộ nhớ đệm trình duyệt -->
+  <div class="info-bar" style="padding: 24px 40px 32px;">
+    <div class="star-left" style="margin-bottom: 4px;">
       <div class="star-astronomy-name" id="d-star-name">…</div>
       <div class="girl-name-big" id="d-girl-name">…</div>
-      <div class="star-meaning"  id="d-meaning">…</div>
+      <div class="star-meaning"  id="d-meaning" style="margin-bottom: 10px;">…</div>
       <div class="star-msg"      id="d-msg">…</div>
     </div>
     <div class="star-right">
@@ -306,7 +302,7 @@ const CFG = {
       <div class="coord-row"><span class="ck">Xích Vĩ</span>   <span class="cv" id="d-dec">—</span></div>
       <div class="coord-row"><span class="ck">Độ Sáng</span>   <span class="cv" id="d-mag">—</span></div>
       <div class="coord-row"><span class="ck">Khoảng Cách</span><span class="cv" id="d-dist">—</span></div>
-      <div class="divider"></div>
+      <div class="divider" style="margin: 12px 0 12px auto;"></div>
       <div class="coord-row"><span class="ck">Chòm Sao</span> <span class="cv" id="d-const">—</span></div>
     </div>
   </div>
