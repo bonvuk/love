@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✦ Ngôi Sao Tình Yêu Của Em ✦</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ──────────────────────────────────────────
+   RESET & BASE
+────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --rose-gold: #E8A86A;
+  --rose-hi:   #FFC8A0;
+  --rose-lo:   #B8782A;
+  --cream:     #F2E8D8;
+  --mist:      #A89CC0;
+  --void:      #04050F;
+  --deep:      #1C0709;
+  --mid:       #300C10;
+}
+
+html, body {
+  width:100%; height:100%;
+  background: var(--void);
+  color: var(--cream);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ──────────────────────────────────────────
+   PASSWORD SCREEN
+────────────────────────────────────────── */
+#pw-screen {
+  position: fixed; inset:0; z-index:200;
+  display: flex; align-items:center; justify-content:center;
+  background: radial-gradient(ellipse at 50% 60%, var(--mid) 0%, var(--void) 70%);
+  transition: opacity 1.2s ease;
+}
+#pw-screen.fade-out { opacity:0; pointer-events:none; }
+
+#pw-bg { position:absolute; inset:0; overflow:hidden; }
+.sp {
+  position:absolute; border-radius:50%; background:#fff;
+  animation: tw var(--d) ease-in-out infinite;
+  animation-delay: var(--dl);
+}
+@keyframes tw {
+  0%,100% { opacity: var(--a); transform:scale(1); }
+  50%      { opacity:1;        transform:scale(1.6); }
+}
+
+.pw-card {
+  position: relative; z-index:1;
+  width: min(460px, 92vw);
+  padding: 56px 52px 48px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(232,168,106,0.18);
+  border-radius: 2px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 80px rgba(0,0,0,0.6), 0 0 40px rgba(232,168,106,0.04);
+  text-align: center;
+}
+
+.star-icon {
+  display: inline-block;
+  font-size: 46px; color: var(--rose-gold);
+  margin-bottom: 28px;
+  animation: pulse-icon 3.5s ease-in-out infinite;
+  text-shadow: 0 0 16px rgba(232,168,106,.9), 0 0 40px rgba(232,168,106,.4);
+  line-height:1;
+}
+@keyframes pulse-icon {
+  0%,100% { text-shadow: 0 0 16px rgba(232,168,106,.9), 0 0 40px rgba(232,168,106,.4); transform:scale(1); }
+  50%      { text-shadow: 0 0 28px #E8A86A, 0 0 60px rgba(232,168,106,.7), 0 0 100px rgba(232,168,106,.2); transform:scale(1.12); }
+}
+
+.pw-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(17px, 4vw, 22px);
+  color: var(--rose-gold);
+  letter-spacing: .08em;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+.pw-sub {
+  font-style:italic; font-size:15px;
+  color: var(--mist); line-height:1.7;
+  margin-bottom: 44px;
+}
+
+.pw-input {
+  width:100%; background:transparent; border:none;
+  border-bottom: 1px solid rgba(232,168,106,.35);
+  padding: 10px 6px 10px; text-align:center;
+  font-family:'Cormorant Garamond',serif; font-size:22px;
+  letter-spacing:.35em; color:var(--cream); outline:none;
+  transition: border-color .3s;
+  margin-bottom: 36px;
+}
+.pw-input:focus       { border-bottom-color: var(--rose-gold); }
+.pw-input::placeholder{ color:rgba(168,156,192,.45); letter-spacing:.12em; font-style:italic; font-size:14px; }
+
+.pw-btn {
+  width:100%; padding:14px 20px; background:transparent; cursor:pointer;
+  border: 1px solid var(--rose-lo); color: var(--rose-gold);
+  font-family:'Cinzel Decorative',serif; font-size:12px;
+  letter-spacing:.25em; transition: all .4s; position:relative; overflow:hidden;
+}
+.pw-btn::after {
+  content:''; position:absolute; inset:0; background:var(--rose-gold);
+  transform:scaleX(0); transform-origin:left; transition:transform .4s ease; z-index:-1;
+}
+.pw-btn:hover::after { transform:scaleX(1); }
+.pw-btn:hover { color:var(--void); border-color:var(--rose-gold); }
+
+.pw-err {
+  margin-top:18px; font-style:italic; font-size:13.5px;
+  color:#E07070; opacity:0; transition:opacity .3s;
+}
+.pw-err.show { opacity:1; }
+
+@keyframes shake {
+  0%,100%{transform:translateX(0)}
+  20%,60%{transform:translateX(-9px)}
+  40%,80%{transform:translateX(9px)}
+}
+.do-shake { animation: shake .38s ease !important; }
+
+/* ──────────────────────────────────────────
+   STAR SCREEN
+────────────────────────────────────────── */
+#star-screen {
+  position: fixed; inset:0; z-index:10;
+  opacity:0; transition:opacity 1.8s ease;
+  pointer-events:none;
+}
+#star-screen.show { opacity:1; pointer-events:all; }
+
+#canvas { display:block; width:100%; height:100%; }
+
+#star-screen::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
+  background: radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(4,5,15,.55) 100%);
+}
+
+.top-tag {
+  position:absolute; top:32px; left:50%; transform:translateX(-50%);
+  z-index:5; text-align:center;
+  font-size:11px; letter-spacing:.6em; text-transform:uppercase;
+  color:rgba(232,168,106,.5);
+  opacity:0; animation: rise 1s ease forwards; animation-delay:2s;
+}
+
+.info-bar {
+  position:absolute; bottom:0; left:0; right:0; z-index:5;
+  padding: 50px 60px 44px;
+  background: linear-gradient(to top, rgba(4,5,15,.97) 0%, rgba(4,5,15,.75) 45%, transparent 100%);
+  display:flex; align-items:flex-end; justify-content:space-between; gap:40px;
+  flex-wrap:wrap;
+}
+
+.star-left { flex:1; min-width:240px; }
+
+/* Thêm hiệu ứng chữ nhỏ tinh tế cho Tên Sao */
+.star-astronomy-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  color: var(--rose-gold);
+  opacity: 0.8;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+/* Biến tên của ẻm thành Spotlight lớn, nổi bật */
+.girl-name-big {
+  font-family:'Cinzel Decorative',serif;
+  font-size: clamp(32px, 5.5vw, 64px); /* Tăng kích thước chữ to hơn hẳn */
+  color: #FFFFFF; /* Màu trắng sáng thuần khiết tạo tương phản mạnh */
+  line-height:1.15; margin-bottom:8px;
+  text-shadow: 0 0 20px rgba(255,200,220,0.8), 0 0 40px rgba(255,150,180,0.4); /* Glow sáng rực hồng */
+  letter-spacing: 0.05em;
+}
+
+.star-meaning {
+  font-style:italic; font-size:17px;
+  color:var(--mist); margin-bottom:18px;
+}
+.star-msg {
+  font-size:15.5px; font-style:italic;
+  color:rgba(242,232,216,.75); line-height:1.85;
+  max-width:520px;
+}
+
+.star-right { min-width:220px; text-align:right; }
+.coord-head {
+  font-size:10.5px; letter-spacing:.38em; text-transform:uppercase;
+  color:rgba(232,168,106,.55); margin-bottom:14px;
+}
+.coord-row {
+  display:flex; justify-content:space-between; gap:20px;
+  margin-bottom:7px; font-size:14px;
+}
+.ck { color:var(--mist); font-style:italic; }
+.cv { color:var(--cream); font-weight:300; letter-spacing:.04em; }
+.divider {
+  width:36px; height:1px; margin:18px 0 18px auto;
+  background:linear-gradient(to right, transparent, var(--rose-lo));
+}
+
+@keyframes rise {
+  from{opacity:0;transform:translate(-50%,12px)}
+  to{opacity:1;transform:translate(-50%,0)}
+}
+@keyframes fadeUp {
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.star-left  { opacity:0; animation: fadeUp 1.1s ease forwards; animation-delay:1.6s; }
+.star-right { opacity:0; animation: fadeUp 1.1s ease forwards; animation-delay:1.9s; }
+
+.star-left, .star-right { min-width:0; overflow:hidden; }
+.girl-name-big { word-break:break-word; }
+.star-msg      { word-break:break-word; }
+
+@media (max-width:900px){
+  .info-bar { padding:44px 36px 36px; gap:28px; }
+  .girl-name-big { font-size: clamp(26px, 6vw, 44px) !important; }
+}
+@media (max-width:680px){
+  .info-bar      { flex-direction:column; align-items:flex-start; padding:30px 20px 32px; gap:20px; }
+  .star-right    { text-align:left; width:100%; }
+  .divider       { margin:12px 0; }
+  .coord-row     { justify-content:flex-start; gap:12px; }
+  .pw-card       { padding:40px 24px 36px; }
+  .girl-name-big { font-size: clamp(24px, 8vw, 38px) !important; }
+  .star-msg      { font-size:14px; }
+}
+@media (max-width:400px){
+  .girl-name-big { font-size: clamp(20px, 9vw, 30px) !important; }
+  .info-bar      { padding:24px 16px 28px; }
+}
+</style>
+</head>
+<body>
+
+<script>
+const CFG = {
+  /* 🔑 Mật khẩu */
+  password:      "1308",
+
+  /* ⭐ Tên Ngôi Sao Thiên Văn (Chữ nhỏ thanh lịch phía trên) */
+  starName:      "AETERNUS VENUS (TAURUS)", 
+
+  /* 💖 Tên của Ẻm (Sẽ hiện TO NHẤT, NỔI BẬT NHẤT màn hình) */
+  girlName:      "PHẠM NGỌC HẢI THI", 
+
+  /* 📜 Ý nghĩa & Lời chúc */
+  starMeaning:   "Ngôi Sao Đẹp Nhất Vũ Trụ Của Anh",
+  message:       "Ngôi sao này chính là hiện thân của tình yêu thuần khiết và bất tử mà anh dành cho em. Dù vũ trụ có thay đổi, ánh sáng của nó vẫn sẽ luôn dõi theo và sưởi ấm trái tim em, mãi mãi.",
+
+  /* 📡 Tọa độ thiên văn */
+  ra:            "03h 15m 12.0s",
+  dec:           "+18° 30′ 01″",
+  magnitude:     "-4.2",
+  distance:      "40 - 260 triệu km",
+  constellation: "Taurus",
+
+  /* 🌈 Màu sắc ngôi sao */
+  starColor:     "rose",
+};
+</script>
+<div id="pw-screen">
+  <div id="pw-bg"></div>
+  <div class="pw-card" id="pw-card">
+    <div class="star-icon">💖</div>
+    <h1 class="pw-title">Lá Thư Tình<br>Từ Các Vì Sao</h1>
+    <p class="pw-sub">Có một thông điệp vĩnh cửu đang chờ bạn<br>Hãy nhập mật khẩu để cảm nhận</p>
+    <input id="pw-inp" class="pw-input" type="password" placeholder="mật khẩu là..." autocomplete="off">
+    <button class="pw-btn" id="pw-btn">✦ &nbsp; Khám Phá &nbsp; ✦</button>
+    <p class="pw-err" id="pw-err">Sai rồi… hãy thử lại bằng cả trái tim 💫</p>
+  </div>
+</div>
+
+<div id="star-screen">
+  <canvas id="canvas"></canvas>
+
+  <div class="top-tag" id="top-tag">— Nằm trong Chòm Sao <span id="tag-const"></span> —</div>
+
+  <div class="info-bar">
+    <div class="star-left">
+      <div class="star-astronomy-name" id="d-star-name">…</div>
+      <div class="girl-name-big" id="d-girl-name">…</div>
+      
+      <div class="star-meaning"  id="d-meaning">…</div>
+      <div class="star-msg"      id="d-msg">…</div>
+    </div>
+
+    <div class="star-right">
+      <div class="coord-head">Vị Trí Trên Thiên Không</div>
+      <div class="coord-row"><span class="ck">Xích Kinh</span> <span class="cv" id="d-ra">—</span></div>
+      <div class="coord-row"><span class="ck">Xích Vĩ</span>   <span class="cv" id="d-dec">—</span></div>
+      <div class="coord-row"><span class="ck">Độ Sáng</span>   <span class="cv" id="d-mag">—</span></div>
+      <div class="coord-row"><span class="ck">Khoảng Cách</span><span class="cv" id="d-dist">—</span></div>
+      <div class="divider"></div>
+      <div class="coord-row"><span class="ck">Chòm Sao</span> <span class="cv" id="d-const">—</span></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+/* ──────────────────────────────────────────
+   STAR FIELD (CSS background on pw screen)
+────────────────────────────────────────── */
+(function(){
+  const bg = document.getElementById('pw-bg');
+  for(let i=0;i<220;i++){
+    const s = document.createElement('div');
+    s.className = 'sp';
+    const sz = Math.random()*2.2+.4;
+    s.style.cssText =
+      `width:${sz}px;height:${sz}px;`+
+      `left:${Math.random()*100}%;top:${Math.random()*100}%;`+
+      `--d:${2+Math.random()*5}s;`+
+      `--dl:${Math.random()*5}s;`+
+      `--a:${(.1+Math.random()*.6).toFixed(2)};`+
+      `opacity:${.1+Math.random()*.6};`;
+    bg.appendChild(s);
+  }
+})();
+
+/* ──────────────────────────────────────────
+   PASSWORD LOGIC
+────────────────────────────────────────── */
+const pwInp  = document.getElementById('pw-inp');
+const pwBtn  = document.getElementById('pw-btn');
+const pwErr  = document.getElementById('pw-err');
+const pwCard = document.getElementById('pw-card');
+const pwScr  = document.getElementById('pw-screen');
+
+function tryUnlock(){
+  if(pwInp.value.trim() === CFG.password){
+    pwScr.classList.add('fade-out');
+    setTimeout(()=>{ pwScr.style.display='none'; revealStar(); }, 1200);
+  } else {
+    pwErr.classList.add('show');
+    pwCard.classList.remove('do-shake');
+    void pwCard.offsetWidth;
+    pwCard.classList.add('do-shake');
+    pwInp.value = '';
+    setTimeout(()=>pwErr.classList.remove('show'), 3000);
+  }
+}
+
+pwBtn.addEventListener('click', tryUnlock);
+pwInp.addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
+
+/* ──────────────────────────────────────────
+   POPULATE DOM
+────────────────────────────────────────── */
+function revealStar(){
+  document.getElementById('d-star-name').textContent = "✦ " + CFG.starName;
+  document.getElementById('d-girl-name').textContent = CFG.girlName;
+  document.getElementById('d-meaning').textContent   = CFG.starMeaning;
+  document.getElementById('d-msg').textContent       = CFG.message;
+  document.getElementById('d-ra').textContent        = CFG.ra;
+  document.getElementById('d-dec').textContent       = CFG.dec;
+  document.getElementById('d-mag').textContent       = CFG.magnitude;
+  document.getElementById('d-dist').textContent      = CFG.distance;
+  document.getElementById('d-const').textContent     = CFG.constellation;
+  document.getElementById('tag-const').textContent   = CFG.constellation;
+
+  const ss = document.getElementById('star-screen');
+  ss.style.display = 'block';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>ss.classList.add('show')));
+  initThree();
+}
+
+/* ──────────────────────────────────────────
+   THREE.JS — STAR
+────────────────────────────────────────── */
+function initThree(){
+  const COLORS = {
+    gold:  { core:'#FFFADC', inner:'rgba(255,248,200,1)', mid:'rgba(255,190,60,0.55)', outer:'rgba(255,140,20,0.12)', ray:'rgba(255,236,160,1)' },
+    blue:  { core:'#DCF0FF', inner:'rgba(200,235,255,1)', mid:'rgba(80,160,255,0.55)', outer:'rgba(30,80,255,0.12)',  ray:'rgba(180,220,255,1)' },
+    white: { core:'#FFFFFF', inner:'rgba(255,255,255,1)', mid:'rgba(200,215,255,0.55)',outer:'rgba(180,200,255,0.1)', ray:'rgba(255,255,255,1)' },
+    rose:  { core:'#FFE0EC', inner:'rgba(255,200,220,1)', mid:'rgba(255,150,180,0.55)',outer:'rgba(220,100,140,0.12)', ray:'rgba(255,210,230,1)' },
+  };
+  const C = COLORS[CFG.starColor] || COLORS.gold;
+
+  const canvas   = document.getElementById('canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x04050F, 1);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, .1, 500);
+  camera.position.set(0,0,5);
+
+  /* ── background star field ── */
+  const BG_COUNT = 6000;
+  const bPos  = new Float32Array(BG_COUNT*3);
+  const bCol  = new Float32Array(BG_COUNT*3);
+  const bSize = new Float32Array(BG_COUNT);
+
+  for(let i=0;i<BG_COUNT;i++){
+    const r   = 30 + Math.random()*130;
+    const th  = Math.random()*Math.PI*2;
+    const ph  = Math.acos(2*Math.random()-1);
+    bPos[i*3]   = r*Math.sin(ph)*Math.cos(th);
+    bPos[i*3+1] = r*Math.sin(ph)*Math.sin(th);
+    bPos[i*3+2] = r*Math.cos(ph);
+
+    const t = Math.random();
+    bCol[i*3]   = t>.6 ? 1 : .7+Math.random()*.3;
+    bCol[i*3+1] = .8+Math.random()*.2;
+    bCol[i*3+2] = t>.7 ? 1 : .85+Math.random()*.15;
+    bSize[i]    = Math.random()*1.5+.2;
+  }
+
+  const starTex = (()=>{
+    const c=document.createElement('canvas'); c.width=c.height=32;
+    const x=c.getContext('2d');
+    const g=x.createRadialGradient(16,16,0,16,16,16);
+    g.addColorStop(0,'rgba(255,255,255,1)');
+    g.addColorStop(.4,'rgba(255,255,255,.6)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g; x.fillRect(0,0,32,32);
+    return new THREE.CanvasTexture(c);
+  })();
+
+  const bgGeo = new THREE.BufferGeometry();
+  bgGeo.setAttribute('position', new THREE.BufferAttribute(bPos,3));
+  bgGeo.setAttribute('color',    new THREE.BufferAttribute(bCol,3));
+  bgGeo.setAttribute('size',     new THREE.BufferAttribute(bSize,1));
+
+  const bgMat = new THREE.PointsMaterial({
+    map: starTex, size:.12, vertexColors:true,
+    transparent:true, opacity:.85, sizeAttenuation:true,
+    alphaTest:.01, depthWrite:false,
+  });
+  scene.add(new THREE.Points(bgGeo, bgMat));
+
+  /* ── nebula background glow ── */
+  const mkTex = (fn, sz=256)=>{
+    const c=document.createElement('canvas'); c.width=c.height=sz;
+    fn(c.getContext('2d'), c.width);
+    return new THREE.CanvasTexture(c);
+  };
+
+  const nebTex = mkTex((ctx,s)=>{
+    const g=ctx.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+    g.addColorStop(0, 'rgba(130,30,60,.18)');
+    g.addColorStop(.5,'rgba(80,10,30,.08)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,s,s);
+  }, 256);
+
+  const nebSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+    map:nebTex, transparent:true, blending:THREE.AdditiveBlending,
+    depthWrite:false, opacity:.9,
+  }));
+  nebSprite.scale.set(14,14,1);
+  nebSprite.position.z = -1;
+  scene.add(nebSprite);
+
+  /* ── star core ── */
+  const core = new THREE.Mesh(
+    new THREE.SphereGeometry(.2,32,32),
+    new THREE.MeshBasicMaterial({ color: new THREE.Color(C.core) })
+  );
+  scene.add(core);
+
+  /* ── glow sprite factory ── */
+  function glowSprite(inner, outer, sz=256){
+    const tex = mkTex((ctx,s)=>{
+      const g=ctx.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+      g.addColorStop(0,   inner);
+      g.addColorStop(.25, inner);
+      g.addColorStop(.6,  outer);
+      g.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.fillStyle=g; ctx.fillRect(0,0,s,s);
+    }, sz);
+    return new THREE.Sprite(new THREE.SpriteMaterial({
+      map:tex, transparent:true, blending:THREE.AdditiveBlending,
+      depthWrite:false,
+    }));
+  }
+
+  const g1 = glowSprite(C.inner, C.mid.replace('0.55','0.4'),256);  g1.scale.set(1.4,1.4,1);
+  const g2 = glowSprite(C.mid,   C.outer,256);                       g2.scale.set(3.2,3.2,1);
+  const g3 = glowSprite(C.outer, 'rgba(0,0,0,0)', 512);              g3.scale.set(7,7,1);
+  scene.add(g1,g2,g3);
+
+  /* ── 8-pointed star rays ── */
+  function rayTex(angle, alpha){
+    return mkTex((ctx,s)=>{
+      ctx.save(); ctx.translate(s/2,s/2); ctx.rotate(angle); ctx.translate(-s/2,-s/2);
+      const gh=ctx.createLinearGradient(0,s/2,s,s/2);
+      gh.addColorStop(0,   'rgba(0,0,0,0)');
+      gh.addColorStop(.42, 'rgba(0,0,0,0)');
+      gh.addColorStop(.5,  C.ray);
+      gh.addColorStop(.58, 'rgba(0,0,0,0)');
+      gh.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.fillStyle=gh; ctx.fillRect(0,s/2-10,s,20);
+      const gv=ctx.createLinearGradient(s/2,0,s/2,s);
+      gv.addColorStop(0,   'rgba(0,0,0,0)');
+      gv.addColorStop(.42, 'rgba(0,0,0,0)');
+      gv.addColorStop(.5,  C.ray);
+      gv.addColorStop(.58, 'rgba(0,0,0,0)');
+      gv.addColorStop(1,   'rgba(0,0,0,0)');
+      ctx.fillStyle=gv; ctx.fillRect(s/2-10,0,20,s);
+      ctx.restore();
+    }, 512);
+  }
+
+  const ray1 = new THREE.Sprite(new THREE.SpriteMaterial({ map:rayTex(0), transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, opacity:.85 }));
+  ray1.scale.set(5,5,1);
+  const ray2 = new THREE.Sprite(new THREE.SpriteMaterial({ map:rayTex(Math.PI/4), transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, opacity:.45 }));
+  ray2.scale.set(3.8,3.8,1);
+  scene.add(ray1,ray2);
+
+  /* ── floating sparkles around star ── */
+  const SPARK = 60;
+  const spkPos  = new Float32Array(SPARK*3);
+  const spkData = [];
+  for(let i=0;i<SPARK;i++){
+    const a=Math.random()*Math.PI*2, r=.6+Math.random()*1.8;
+    spkData.push({ a, r, speed:.2+Math.random()*.4, phase:Math.random()*Math.PI*2, vr:.3+Math.random()*.5 });
+    spkPos[i*3]  =Math.cos(a)*r; spkPos[i*3+1]=Math.sin(a)*r; spkPos[i*3+2]=(Math.random()-.5)*.5;
+  }
+  const spkGeo = new THREE.BufferGeometry();
+  spkGeo.setAttribute('position', new THREE.BufferAttribute(spkPos,3));
+  const spkMat = new THREE.PointsMaterial({
+    map:starTex, size:.07, color: new THREE.Color(C.core),
+    transparent:true, opacity:.6, sizeAttenuation:true,
+    alphaTest:.01, depthWrite:false, blending:THREE.AdditiveBlending,
+  });
+  const sparkles = new THREE.Points(spkGeo, spkMat);
+  scene.add(sparkles);
+
+  /* ── ambient particles in full scene ── */
+  const DUST = 300;
+  const dustPos = new Float32Array(DUST*3);
+  for(let i=0;i<DUST;i++){
+    dustPos[i*3]  =(Math.random()-.5)*10;
+    dustPos[i*3+1]=(Math.random()-.5)*10;
+    dustPos[i*3+2]=(Math.random()-.5)*8;
+  }
+  const dustGeo = new THREE.BufferGeometry();
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos,3));
+  const dustMat = new THREE.PointsMaterial({
+    size:.03, color:0xFFFFFF, transparent:true, opacity:.22,
+    sizeAttenuation:true, depthWrite:false,
+  });
+  scene.add(new THREE.Points(dustGeo, dustMat));
+
+  /* ── mouse parallax ── */
+  const mouse = {tx:0, ty:0, cx:0, cy:0};
+  document.addEventListener('mousemove', e=>{
+    mouse.tx = (e.clientX/window.innerWidth-.5)*.6;
+    mouse.ty = (e.clientY/window.innerHeight-.5)*.4;
+  });
+
+  /* ── intro state ── */
+  let t=0, intro=0;
+
+  /* ── animate ── */
+  function animate(){
+    requestAnimationFrame(animate);
+    t += .012;
+
+    if(intro<1){ intro=Math.min(1,intro+.006); }
+    const eased = 1-Math.pow(1-intro,3);
+
+    mouse.cx += (mouse.tx-mouse.cx)*.04;
+    mouse.cy += (mouse.ty-mouse.cy)*.04;
+    camera.position.x = mouse.cx;
+    camera.position.y = -mouse.cy;
+    camera.lookAt(0,0,0);
+
+    const p1 = .97+.03*Math.sin(t*1.1);
+    const p2 = .94+.06*Math.sin(t*.7+.8);
+    const p3 = .9 +.10*Math.sin(t*.5+1.6);
+
+    core.scale.setScalar(eased*(1+.025*Math.sin(t*1.3)));
+    g1.scale.set(1.4*p1*eased, 1.4*p1*eased, 1);
+    g2.scale.set(3.2*p2*eased, 3.2*p2*eased, 1);
+    g3.scale.set(7  *p3*eased, 7  *p3*eased, 1);
+    ray1.scale.set(5*eased, 5*eased, 1);
+    ray2.scale.set(3.8*eased, 3.8*eased, 1);
+
+    ray1.material.rotation = t*.04;
+    ray2.material.rotation = -t*.025 + Math.PI/4;
+    ray1.material.opacity  = (.75+.1*Math.sin(t*1.8))*eased;
+    ray2.material.opacity  = (.40+.08*Math.sin(t*2.2))*eased;
+
+    const sp = spkGeo.attributes.position.array;
+    for(let i=0;i<SPARK;i++){
+      const d=spkData[i];
+      d.a += d.speed*.012;
+      const fluctR = d.r + .2*Math.sin(t*d.vr+d.phase);
+      sp[i*3]   = Math.cos(d.a)*fluctR;
+      sp[i*3+1] = Math.sin(d.a)*fluctR;
+      sp[i*3+2] = .2*Math.sin(t*d.vr*1.3+d.phase);
+    }
+    spkGeo.attributes.position.needsUpdate=true;
+    sparkles.material.opacity = (.4+.2*Math.sin(t*.9))*eased;
+
+    bgGeo.attributes.position.needsUpdate=false;
+    scene.children[0].rotation.y = t*.007;
+    scene.children[0].rotation.x = t*.002;
+
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  window.addEventListener('resize',()=>{
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  });
+}
+</script>
+</body>
+</html>
