@@ -197,7 +197,7 @@ html, body {
 
 .girl-name-big {
   font-family:'Cinzel Decorative',serif;
-  font-size: clamp(24px, 4vw, 44px); /* Hạ size chữ tiêu đề để đỡ ngợp */
+  font-size: clamp(24px, 4vw, 44px); 
   color: #FFFFFF; 
   line-height:1.2; margin-bottom:6px;
   text-shadow: 0 0 15px rgba(255,210,180,0.4), 0 2px 4px rgba(0,0,0,0.6); 
@@ -244,13 +244,13 @@ html, body {
 .girl-name-big, .star-msg { word-break:break-word; }
 
 /* ──────────────────────────────────────────
-   RESPONSIVE (MOBILE SIÊU GỌN CHỮ)
+   RESPONSIVE (MOBILE SIÊU GỌN CHỮ) - ĐÃ FIX
 ────────────────────────────────────────── */
 @media (max-width:768px){
   .info-bar { 
-    padding: 16px 20px 20px; 
+    padding: 20px 20px 30px; 
     gap: 16px; 
-    max-height: 45vh;
+    max-height: 65vh; 
   }
   .girl-name-big { font-size: clamp(20px, 5.5vw, 28px) !important; }
   .star-msg { font-size: 13px; line-height: 1.6; }
@@ -260,14 +260,14 @@ html, body {
   .info-bar { 
     flex-direction: column; 
     align-items: flex-start; 
-    justify-content: flex-end;
+    justify-content: flex-start; 
   }
   .star-left, .star-right { width: 100%; flex: none; max-width: 100%; }
-  .star-right { text-align: left; margin-top: 4px; }
-  .divider { margin: 8px 0; margin-right: auto; }
+  .star-right { text-align: left; margin-top: 12px; } 
+  .divider { margin: 12px 0; margin-right: auto; }
   .coord-row { justify-content: flex-start; gap: 20px; margin-bottom: 3px; }
   .pw-card { padding: 36px 20px 32px; }
-  .star-meaning { margin-bottom: 6px; font-size: 14px; }
+  .star-meaning { margin-bottom: 8px; font-size: 14px; }
 }
 
 .shooting-star{
