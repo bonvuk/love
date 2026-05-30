@@ -70,6 +70,8 @@ html, body {
 
 .star-icon {
   display: inline-block;
+  animation: heartbeat 1.4s infinite;
+  filter: drop-shadow(0 0 18px rgba(255,120,180,.9));
   font-size: 40px; color: var(--rose-gold);
   margin-bottom: 24px;
   line-height:1;
@@ -119,6 +121,14 @@ html, body {
   color:#E07070; opacity:0; transition:opacity .3s;
 }
 .pw-err.show { opacity:1; }
+
+@keyframes heartbeat{
+  0%,100%{transform:scale(1)}
+  15%{transform:scale(1.15)}
+  30%{transform:scale(1)}
+  45%{transform:scale(1.22)}
+  60%{transform:scale(1)}
+}
 
 @keyframes shake {
   0%,100%{transform:translateX(0)}
@@ -246,6 +256,32 @@ html, body {
   .girl-name-big { font-size: clamp(20px, 9vw, 30px) !important; }
   .info-bar      { padding:16px 16px 24px; }
 }
+
+.shooting-star{
+position:fixed;
+width:2px;height:2px;
+background:white;
+border-radius:50%;
+box-shadow:0 0 10px white,0 0 20px white;
+z-index:3;pointer-events:none;
+}
+
+
+/* ULTIMATE VIP */
+#star-screen.show .girl-name-big{animation:vipFade 2.5s ease}
+@keyframes vipFade{
+0%{opacity:0;transform:translateY(30px)}
+100%{opacity:1;transform:translateY(0)}
+}
+.milkyway-overlay{
+position:fixed;inset:0;pointer-events:none;z-index:1;
+background:
+radial-gradient(circle at 20% 40%, rgba(120,140,255,.08), transparent 30%),
+radial-gradient(circle at 70% 60%, rgba(255,180,220,.06), transparent 25%),
+linear-gradient(125deg, transparent 35%, rgba(255,255,255,.035) 50%, transparent 65%);
+mix-blend-mode:screen;
+}
+
 </style>
 </head>
 <body>
@@ -256,7 +292,7 @@ const CFG = {
   starName:      "AETERNUS VENUS (TAURUS)", 
   girlName:      "PHẠM NGỌC HẢI THI", 
   starMeaning:   "Ngôi Sao Đẹp Nhất Vũ Trụ Của Anh",
-  message:       "Ngôi sao này chính là hiện thân của tình yêu thuần khiết và bất tử mà anh dành cho em. Dù vũ trụ có thay đổi, ánh sáng của nó vẫn sẽ luôn dõi theo và sưởi ấm trái tim em, mãi mãi.",
+  message:       "Ngôi sao này chính là hiện thân của tình yêu thuần khiết và bất tử mà anh dành cho em. Dù vũ trụ có thay đổi, ánh sáng của nó vẫn sẽ luôn dõi theo và sưởi ấm trái tim em, mãi mãi. Nếu một ngày em cảm thấy mệt mỏi, hãy nhìn lên bầu trời đêm. Có thể em sẽ không nhìn thấy ngôi sao này, nhưng nó vẫn luôn ở đó. Giống như tình cảm anh dành cho em.",
   ra:            "03h 15m 12.0s",
   dec:           "+18° 30′ 01″",
   magnitude:     "-4.2",
@@ -271,7 +307,7 @@ const CFG = {
   <div class="pw-card" id="pw-card">
     <div class="star-icon">💖</div>
     <h1 class="pw-title">Lá Thư Tình<br>Từ Các Vì Sao</h1>
-    <p class="pw-sub">Có một thông điệp vĩnh cửu đang chờ bạn<br>Hãy nhập mật khẩu để cảm nhận</p>
+    <p class="pw-sub">Trong hàng tỷ vì sao ngoài kia,<br>có một vì sao mang tên em ✨</p>
     <input id="pw-inp" class="pw-input" type="password" placeholder="mật khẩu là..." autocomplete="off">
     <button class="pw-btn" id="pw-btn">✦ &nbsp; Khám Phá &nbsp; ✦</button>
     <p class="pw-err" id="pw-err">Sai rồi… hãy thử lại bằng cả trái tim 💫</p>
@@ -279,7 +315,7 @@ const CFG = {
 </div>
 
 <div id="star-screen">
-  <canvas id="canvas"></canvas>
+  <canvas id="canvas"></canvas><div class="milkyway-overlay"></div>
   <div class="top-tag" id="top-tag">— Nằm trong Chòm Sao <span id="tag-const"></span> —</div>
   <div class="info-bar">
     <div class="star-left">
@@ -289,7 +325,7 @@ const CFG = {
       <div class="star-msg"      id="d-msg">…</div>
     </div>
     <div class="star-right">
-      <div class="coord-head">Vị Trí Trên Thiên Không</div>
+      <div class="coord-head">HỒ SƠ THIÊN VĂN</div>
       <div class="coord-row"><span class="ck">Xích Kinh</span> <span class="cv" id="d-ra">—</span></div>
       <div class="coord-row"><span class="ck">Xích Vĩ</span>   <span class="cv" id="d-dec">—</span></div>
       <div class="coord-row"><span class="ck">Độ Sáng</span>   <span class="cv" id="d-mag">—</span></div>
@@ -393,7 +429,7 @@ function initThree(){
 
   const scene  = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, .1, 500);
-  camera.position.set(0,0,6);
+  camera.position.set(0,0,22);
 
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;      
@@ -421,7 +457,7 @@ function initThree(){
 
   /* 🌌 ĐIỀU CHỈNH CHUYÊN SÂU: Co cụm bán kính phân bổ sao (Từ 138 xuống 98) 
      Giúp dải sao tập trung dày đặc, tạo độ đậm nén mạnh mẽ ở trung tâm */
-  const STAR_COUNT = 18000;
+  const STAR_COUNT = 30000;
   const starGeo = new THREE.BufferGeometry();
   const starPos = new Float32Array(STAR_COUNT * 3);
   const starCol = new Float32Array(STAR_COUNT * 3);
@@ -581,6 +617,7 @@ function initThree(){
   scene.add(ray1, ray2);
 
   let t=0, intro=0;
+let cinematic=true;
 
   /* ── LOOP HOẠT HỌA ── */
   function animate(){
@@ -590,7 +627,17 @@ function initThree(){
     if(intro<1) intro = Math.min(1, intro + 0.008); 
     const eased = 1 - Math.pow(1 - intro, 3); 
 
-    controls.update();
+    
+    if(cinematic){
+      camera.position.z -= 0.08;
+      if(camera.position.z<=6){
+        camera.position.z=6;
+        cinematic=false;
+      }
+    }else{
+      controls.update();
+    }
+    
 
     const p1 = 0.97 + 0.03 * Math.sin(t * 1.1);
     const p2 = 0.94 + 0.06 * Math.sin(t * 0.7 + 0.8);
@@ -659,6 +706,27 @@ function initThree(){
     renderer.setSize(window.innerWidth,window.innerHeight);
   });
 }
+</script>
+<script>
+/* VIP Shooting Stars */
+setInterval(()=>{
+ const s=document.createElement('div');
+ s.className='shooting-star';
+ s.style.left='-20px';
+ s.style.top=(Math.random()*40)+'vh';
+ document.body.appendChild(s);
+
+ let x=-20,y=parseFloat(s.style.top);
+ let id=setInterval(()=>{
+   x+=18;
+   y+=1.5;
+   s.style.transform=`translate(${x}px,${y}px)`;
+   if(x>window.innerWidth+200){
+      clearInterval(id);
+      s.remove();
+   }
+ },16);
+},12000);
 </script>
 </body>
 </html>
