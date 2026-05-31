@@ -138,7 +138,7 @@ html, body {
 .do-shake { animation: shake .38s ease !important; }
 
 /* ──────────────────────────────────────────
-   STAR SCREEN & INFOBAR (TỐI ƯU SIÊU GỌN)
+   STAR SCREEN & BẢO TÀNG THÔNG TIN
 ────────────────────────────────────────── */
 #star-screen {
   position: fixed; inset:0; z-index:10;
@@ -151,123 +151,111 @@ html, body {
 
 #star-screen::before {
   content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
-  background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(2,3,8,.6) 100%);
+  background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(2,3,8,.75) 100%);
 }
 
 .top-tag {
-  position:absolute; top:24px; left:50%; transform:translateX(-50%);
+  position:absolute; top:32px; left:50%; transform:translateX(-50%);
   z-index:5; text-align:center;
-  font-size:10px; letter-spacing:.5em; text-transform:uppercase;
-  color:rgba(232,168,106,.4);
+  font-size:11px; letter-spacing:.6em; text-transform:uppercase;
+  color:rgba(232,168,106,.5);
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
   opacity:0; animation: rise 1s ease forwards; animation-delay:2s;
 }
 
-/* Thu nhỏ chiều cao và padding tổng thể */
+/* ── GIAO DIỆN GỐC PC (ĐÃ FIX FONT CHỮ NHỎ LẠI THANH LỊCH) ── */
 .info-bar {
   position:absolute; bottom:0; left:0; right:0; z-index:5;
-  padding: 24px 44px 28px;
-  background: linear-gradient(to top, rgba(2,3,8,0.95) 0%, rgba(2,3,8,0.7) 70%, transparent 100%);
-  display:flex; align-items:flex-end; justify-content:space-between; gap:40px;
-  max-height: 40vh;
-  overflow-y: auto !important;
-  scrollbar-width: none !important;
+  padding: 20px 30px 22px;
+  background: linear-gradient(to top, rgba(2,3,8,1) 0%, rgba(2,3,8,.85) 60%, transparent 100%);
+  display:flex; align-items:flex-end; justify-content:space-between; gap:32px;
+  max-height: 50vh;
+  overflow-y: auto;
 }
 .info-bar::-webkit-scrollbar { display: none !important; }
 
-.star-left { 
-  flex: 1.3; min-width:280px; 
-  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+.info-group-left {
+  flex: 1; min-width:240px; 
+  text-shadow: 0 2px 8px rgba(0,0,0,0.9);
 }
-.star-right { 
-  flex: 0.9; min-width:240px; max-width: 320px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-  text-align: right;
+
+.info-card.card-profile { 
+  min-width:220px; text-align:right; 
+  text-shadow: 0 2px 8px rgba(0,0,0,0.9);
 }
 
 .star-astronomy-name {
   font-family: 'Cinzel Decorative', serif;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--rose-gold);
-  opacity: 0.75;
-  margin-bottom: 2px;
-  text-transform: uppercase;
+  font-size: 13px; letter-spacing: 0.25em; color: var(--rose-gold);
+  opacity: 0.8; margin-bottom: 6px; text-transform: uppercase;
 }
 
+/* Fix chữ to quá thành chữ vừa phải sang trọng */
 .girl-name-big {
   font-family:'Cinzel Decorative',serif;
-  font-size: clamp(24px, 4vw, 44px); /* Hạ size chữ tiêu đề để đỡ ngợp */
+  font-size: 38px; 
   color: #FFFFFF; 
-  line-height:1.2; margin-bottom:6px;
-  text-shadow: 0 0 15px rgba(255,210,180,0.4), 0 2px 4px rgba(0,0,0,0.6); 
+  line-height:1.2; margin-bottom:8px;
+  text-shadow: 0 0 20px rgba(255,210,180,0.5), 0 2px 4px rgba(0,0,0,0.6); 
   letter-spacing: 0.05em;
 }
 
-.star-meaning {
-  font-style:italic; font-size:15px;
-  color:var(--mist); margin-bottom:12px;
-}
-.star-msg {
-  font-size:14px; font-style:italic;
-  color:rgba(242,232,216,.8); line-height:1.7;
-  max-width:540px;
-}
+.star-meaning { font-style:italic; font-size:16px; color:var(--mist); margin-bottom:16px; }
+.star-msg { font-size:15px; font-style:italic; color:rgba(242,232,216,.85); line-height:1.8; max-width:500px; }
 
-.coord-head {
-  font-size:10px; letter-spacing:.3em; text-transform:uppercase;
-  color:rgba(232,168,106,.6); margin-bottom:10px;
-}
-.coord-row {
-  display:flex; justify-content:space-between; gap:16px;
-  margin-bottom:5px; font-size:13px;
-}
+.coord-head { font-size:10.5px; letter-spacing:.38em; text-transform:uppercase; color:rgba(232,168,106,.65); margin-bottom:14px; }
+.coord-row { display:flex; justify-content:space-between; gap:20px; margin-bottom:7px; font-size:14px; }
 .ck { color:var(--mist); font-style:italic; }
-.cv { color:var(--cream); font-weight:300; letter-spacing:.02em; }
-.divider {
-  width:30px; height:1px; margin:12px 0 12px auto;
-  background:linear-gradient(to right, transparent, var(--rose-lo));
-}
+.cv { color:var(--cream); font-weight:300; letter-spacing:.04em; }
+.divider { width:36px; height:1px; margin:16px 0 16px auto; background:linear-gradient(to right, transparent, var(--rose-lo)); }
 
-@keyframes rise {
-  from{opacity:0;transform:translate(-50%,8px)}
-  to{opacity:1;transform:translate(-50%,0)}
-}
-@keyframes fadeUp {
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.star-left  { opacity:0; animation: fadeUp 1.1s ease forwards; animation-delay:1.6s; }
-.star-right { opacity:0; animation: fadeUp 1.1s ease forwards; animation-delay:1.9s; }
+@keyframes rise { from{opacity:0;transform:translate(-50%,12px)} to{opacity:1;transform:translate(-50%,0)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
-.star-left, .star-right { min-width:0; overflow:hidden; }
+.info-group-left { opacity:0; animation: fadeUp 1.1s ease forwards; animation-delay:1.6s; }
+.card-profile    { opacity:0; animation: fadeUp 1.1s ease forwards; animation-delay:1.9s; }
 .girl-name-big, .star-msg { word-break:break-word; }
 
 /* ──────────────────────────────────────────
-   RESPONSIVE (MOBILE SIÊU GỌN CHỮ)
+   GIAO DIỆN MOBILE: THẺ CUỘN NGANG (GIỮ NGUYÊN)
 ────────────────────────────────────────── */
-@media (max-width:768px){
-  .info-bar { 
-    padding: 16px 20px 20px; 
-    gap: 16px; 
-    max-height: 45vh;
-  }
-  .girl-name-big { font-size: clamp(20px, 5.5vw, 28px) !important; }
-  .star-msg { font-size: 13px; line-height: 1.6; }
+@media (max-width:900px){
+  .info-bar { padding:36px 32px; gap:24px; }
 }
 
-@media (max-width:640px){
-  .info-bar { 
-    flex-direction: column; 
-    align-items: flex-start; 
-    justify-content: flex-end;
+@media (max-width: 768px) {
+  .info-bar {
+    padding: 20px 20px 24px;
+    align-items: stretch;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory;
+    max-height: 190px; 
+    background: linear-gradient(to top, rgba(2,3,8,0.98) 0%, rgba(2,3,8,0.85) 85%, transparent 100%);
+    gap: 16px;
   }
-  .star-left, .star-right { width: 100%; flex: none; max-width: 100%; }
-  .star-right { text-align: left; margin-top: 4px; }
+  
+  .info-group-left { display: contents; }
+  
+  .info-card {
+    flex: 0 0 85% !important; 
+    scroll-snap-align: start;
+    white-space: normal;
+    padding-right: 15px;
+    overflow-y: auto; 
+    text-align: left !important;
+  }
+  .info-card::-webkit-scrollbar { display: none; }
+  
+  .girl-name-big { font-size: 24px !important; margin-bottom: 4px; }
+  .star-astronomy-name { font-size: 11px; margin-bottom: 2px; }
+  .star-meaning { font-size: 14.5px; margin-bottom: 6px; }
+  .star-msg { font-size: 13.5px; line-height: 1.6; }
+  
+  .card-profile { min-width: auto; text-align: left !important; }
+  .coord-head { margin-bottom: 8px; }
   .divider { margin: 8px 0; margin-right: auto; }
-  .coord-row { justify-content: flex-start; gap: 20px; margin-bottom: 3px; }
-  .pw-card { padding: 36px 20px 32px; }
-  .star-meaning { margin-bottom: 6px; font-size: 14px; }
+  .coord-row { justify-content: flex-start; gap: 16px; font-size: 13px; margin-bottom: 4px; }
 }
 
 .shooting-star{
@@ -277,15 +265,16 @@ html, body {
 
 #star-screen.show .girl-name-big{animation:vipFade 2.5s ease}
 @keyframes vipFade{
-  0%{opacity:0;transform:translateY(20px)}
+  0%{opacity:0;transform:translateY(30px)}
   100%{opacity:1;transform:translateY(0)}
 }
 
 .milkyway-overlay{
   position:fixed; inset:0; pointer-events:none; z-index:1;
   background:
-    radial-gradient(circle at 20% 40%, rgba(120,140,255,.06), transparent 30%),
-    radial-gradient(circle at 70% 60%, rgba(255,180,220,.05), transparent 25%);
+    radial-gradient(circle at 20% 40%, rgba(120,140,255,.08), transparent 30%),
+    radial-gradient(circle at 70% 60%, rgba(255,180,220,.06), transparent 25%),
+    linear-gradient(125deg, transparent 35%, rgba(255,255,255,.035) 50%, transparent 65%);
   mix-blend-mode:screen;
 }
 </style>
@@ -300,7 +289,7 @@ const CFG = {
   starMeaning:   "Ngôi Sao Đẹp Nhất Vũ Trụ Của Anh",
   message:       "Ngôi sao này chính là hiện thân của tình yêu thuần khiết và bất tử mà anh dành cho em. Dù vũ trụ có thay đổi, ánh sáng của nó vẫn sẽ luôn dõi theo và sưởi ấm trái tim em, mãi mãi. Nếu một ngày em cảm thấy mệt mỏi, hãy nhìn lên bầu trời đêm. Có thể em sẽ không nhìn thấy ngôi sao này, nhưng nó vẫn luôn ở đó. Giống như tình cảm anh dành cho em.",
   
-  // ĐỊNH DẠNG NGÀY SINH: NĂM-THÁNG-NGÀY
+  // ĐỊNH DẠNG NGÀY SINH CỦA BẠN ẤY: NĂM-THÁNG-NGÀY
   girlDOB:       "2009-08-13", 
 
   ra:            "03h 15m 12.0s",
@@ -308,7 +297,6 @@ const CFG = {
   magnitude:     "-4.2",
   distance:      "40 - 260 triệu km",
   constellation: "Taurus",
-  starColor:     "rose",
 };
 </script>
 
@@ -328,13 +316,19 @@ const CFG = {
   <canvas id="canvas"></canvas><div class="milkyway-overlay"></div>
   <div class="top-tag" id="top-tag">— Nằm trong Chòm Sao <span id="tag-const"></span> —</div>
   <div class="info-bar">
-    <div class="star-left">
-      <div class="star-astronomy-name" id="d-star-name">…</div>
-      <div class="girl-name-big" id="d-girl-name">…</div>
-      <div class="star-meaning"  id="d-meaning">…</div>
-      <div class="star-msg"      id="d-msg">…</div>
+    
+    <div class="info-group-left">
+      <div class="info-card">
+        <div class="star-astronomy-name" id="d-star-name">…</div>
+        <div class="girl-name-big" id="d-girl-name">…</div>
+        <div class="star-meaning"  id="d-meaning">…</div>
+      </div>
+      <div class="info-card">
+        <div class="star-msg" id="d-msg">…</div>
+      </div>
     </div>
-    <div class="star-right">
+    
+    <div class="info-card card-profile">
       <div class="coord-head">HỒ SƠ THIÊN VĂN</div>
       <div class="coord-row"><span class="ck">Giáng Trần</span> <span class="cv" id="d-dob">—</span></div>
       <div class="coord-row"><span class="ck">Tuổi Tinh Tú</span> <span class="cv" id="d-age">—</span></div>
@@ -347,6 +341,7 @@ const CFG = {
       <div class="coord-row"><span class="ck">Khoảng Cách</span><span class="cv" id="d-dist">—</span></div>
       <div class="coord-row"><span class="ck">Chòm Sao</span> <span class="cv" id="d-const">—</span></div>
     </div>
+
   </div>
 </div>
 
@@ -354,9 +349,6 @@ const CFG = {
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-/* ──────────────────────────────────────────
-   THUẬT TOÁN ĐẾM ĐỘNG: NĂM, THÁNG, NGÀY CHÍNH XÁC
-────────────────────────────────────────── */
 function getDynamicAge(dobString) {
   const dob = new Date(dobString);
   const now = new Date();
@@ -365,14 +357,11 @@ function getDynamicAge(dobString) {
   let months = now.getMonth() - dob.getMonth();
   let days = now.getDate() - dob.getDate();
 
-  // Nếu số ngày âm, mượn ngày của tháng trước
   if (days < 0) {
     const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
     days += prevMonth.getDate();
     months--;
   }
-  
-  // Nếu số tháng âm, mượn tháng của năm trước
   if (months < 0) {
     years--;
     months += 12;
@@ -394,9 +383,6 @@ function formatDOB(dobString) {
   return `${day}/${month}/${year}`;
 }
 
-/* ──────────────────────────────────────────
-   STAR FIELD BACKGROUND (MÀN HÌNH KHÓA)
-────────────────────────────────────────── */
 (function(){
   const bg = document.getElementById('pw-bg');
   for(let i=0;i<180;i++){
@@ -414,9 +400,6 @@ function formatDOB(dobString) {
   }
 })();
 
-/* ──────────────────────────────────────────
-   PASSWORD LOGIC
-────────────────────────────────────────── */
 const pwInp  = document.getElementById('pw-inp');
 const pwBtn  = document.getElementById('pw-btn');
 const pwErr  = document.getElementById('pw-err');
@@ -440,9 +423,6 @@ function tryUnlock(){
 pwBtn.addEventListener('click', tryUnlock);
 pwInp.addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
 
-/* ──────────────────────────────────────────
-   POPULATE DOM
-────────────────────────────────────────── */
 function revealStar(){
   document.getElementById('d-star-name').textContent = "✦ " + CFG.starName;
   document.getElementById('d-girl-name').textContent = CFG.girlName;
@@ -465,9 +445,6 @@ function revealStar(){
   initThree();
 }
 
-/* ──────────────────────────────────────────
-   THREE.JS — CINEMATIC UNIVERSE (NO DUST)
-────────────────────────────────────────── */
 function initThree(){
   const COLORS = {
     rose: { core: '#FFFFFF', inner: '#FFE5EC', mid: '#FF8FAB', outer: '#FB6F92' }
@@ -481,8 +458,9 @@ function initThree(){
   renderer.setClearColor(0x020308, 1);
 
   const scene  = new THREE.Scene();
+  
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, .1, 500);
-  camera.position.set(0,0,22);
+  camera.position.set(0, 0, 22);
 
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;      
@@ -619,15 +597,12 @@ function initThree(){
   const ray2 = raySprite(Math.PI/4);ray2.scale.set(3.8, 3.8, 1);
   scene.add(ray1, ray2);
 
-  let t=0, intro=0;
+  let t=0;
   let cinematic=true;
 
   function animate(){
     requestAnimationFrame(animate);
     t += 0.008;
-
-    if(intro<1) intro = Math.min(1, intro + 0.008); 
-    const eased = 1 - Math.pow(1 - intro, 3); 
 
     if(cinematic){
       camera.position.z -= 0.08;
@@ -640,18 +615,18 @@ function initThree(){
     const p2 = 0.94 + 0.06 * Math.sin(t * 0.7 + 0.8);
     const p3 = 0.90 + 0.10 * Math.sin(t * 0.5 + 1.6);
 
-    core.scale.setScalar(eased * (1 + 0.025 * Math.sin(t * 1.3)));
-    g1.scale.set(1.4 * p1 * eased, 1.4 * p1 * eased, 1);
-    g2.scale.set(3.2 * p2 * eased, 3.2 * p2 * eased, 1);
-    g3.scale.set(7.0 * p3 * eased, 7.0 * p3 * eased, 1);
+    core.scale.setScalar(1 + 0.025 * Math.sin(t * 1.3));
+    g1.scale.set(1.4 * p1, 1.4 * p1, 1);
+    g2.scale.set(3.2 * p2, 3.2 * p2, 1);
+    g3.scale.set(7.0 * p3, 7.0 * p3, 1);
     
-    ray1.scale.set(5.0 * eased, 5.0 * eased, 1);
-    ray2.scale.set(3.8 * eased, 3.8 * eased, 1);
+    ray1.scale.set(5.0, 5.0, 1);
+    ray2.scale.set(3.8, 3.8, 1);
 
     ray1.material.rotation = t * 0.04;
     ray2.material.rotation = -t * 0.025 + Math.PI / 4;
-    ray1.material.opacity  = (0.75 + 0.10 * Math.sin(t * 1.8)) * eased;
-    ray2.material.opacity  = (0.40 + 0.08 * Math.sin(t * 2.2)) * eased;
+    ray1.material.opacity  = (0.75 + 0.10 * Math.sin(t * 1.8));
+    ray2.material.opacity  = (0.40 + 0.08 * Math.sin(t * 2.2));
 
     const colorArr = starGeo.attributes.color.array;
     for(let i=0; i<STAR_COUNT; i++) {
